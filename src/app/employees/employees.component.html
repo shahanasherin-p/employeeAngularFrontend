@@ -1,0 +1,97 @@
+<div class="container p-5">
+  <h1 class="text-dark">Employee Details</h1>
+  <div class="d-flex justify-content-between mt-5">
+    <button class="btn btn-outline-dark" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Add Employee</button>
+    <div>
+      <button (click)="getAllEmployee()" type="button" class="btn btn-outline-secondary me-2">All</button>
+      <button (click)="filterEmployee('active')" type="button" class="btn btn-outline-secondary me-2">Active</button>
+      <button (click)="filterEmployee('inactive')" type="button" class="btn btn-outline-secondary ms-2">Inactive</button>        
+    </div>
+  </div>
+  <table class="table table-striped mt-5">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Age</th>
+        <th scope="col">Status</th>
+        <th scope="col">Job Title</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @if(allEmployee.length>0) {  
+        @for (item of allEmployee; track $index) {
+          <tr>
+            <td scope="col">{{$index+1}}</td>
+            <td scope="col">{{item.name}}</td>
+            <td scope="col">{{item.email}}</td>
+            <td scope="col">{{item.age}}</td>
+            <td scope="col"><span class="badge bg-secondary">{{item.status}}</span></td>
+            <td scope="col">{{item.job_title}}</td>
+            <td scope="col">
+              <button (click)="getEmployee(item.id)" class="btn btn-sm btn-outline-warning me-2" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-edit"></i></button>
+              <button (click)="deleteEmployee(item.id)" class="btn btn-sm btn-outline-danger ms-2"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        }
+      } @else {
+        <tr>
+          <td colspan="7" class="text-center">Loading Data!!!..</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Employee</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addForm" (ngSubmit)="addEmployee()">
+          <input type="text" formControlName="name" class="form-control my-3" placeholder="Name">
+          <input type="email" formControlName="email" class="form-control my-3" placeholder="Email">
+          <input type="text" formControlName="job_title" class="form-control my-3" placeholder="Job Title">
+          <input type="text" formControlName="age" class="form-control my-3" placeholder="Age">
+          <select class="form-control my-3" formControlName="status">
+            <option value="">Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <button type="submit" class="btn btn-primary w-100 mt-4">Add</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Employee Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Employee</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateForm" (ngSubmit)="updateEmployee(employee.id)">
+          <input type="text" formControlName="name" class="form-control my-3" placeholder="Name">
+          <input type="email" formControlName="email" class="form-control my-3" placeholder="Email">
+          <input type="text" formControlName="job_title" class="form-control my-3" placeholder="Job Title">
+          <input type="text" formControlName="age" class="form-control my-3" placeholder="Age">
+          <select class="form-control my-3" formControlName="status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <button type="submit" class="btn btn-primary w-100 mt-4">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
